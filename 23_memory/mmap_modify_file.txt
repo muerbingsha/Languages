@@ -1,0 +1,3 @@
+1234567890
+File content of t.txt
+Great World!
