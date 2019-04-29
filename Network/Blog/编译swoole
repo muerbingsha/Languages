@@ -1,0 +1,49 @@
+终端进入swoole根文件
+
+phpize
+
+报错
+grep: /usr/include/php/main/php.h: No such file or directory
+grep: /usr/include/php/Zend/zend_modules.h: No such file or directory
+grep: /usr/include/php/Zend/zend_extensions.h: No such file or directory
+Configuring for:
+PHP Api Version:
+Zend Module Api No:
+Zend Extension Api No:
+因为Mac 把usr/include 挪到xcode目录下，找不到。
+
+解决方法：
+1）关闭Mac的rootless机制，对于系统文件/usr  /sbin /system，mac启动双重保护，sudo也无法修改。
+
+重启电脑，按comman+R，进入恢复界面
+
+顶部菜单/实用工具/terminal/输入
+
+csrutil disable  //关闭rootless
+
+reboot
+
+csrutil enable //打开rootless
+
+csrutil status  //查看rootless状态
+
+有朋友说beta版不用进入恢复界面，用nvram命令，我试了不行。
+
+nvram -xp查看启动设置（xml格式）
+
+2）这时，可以给/usr做软连接
+
+sudo ln -s /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.11.sdk/usr/include  /usr
+
+说明：
+
+看了很多人后面映射的　/usr/include，swoole编译还是报错。后来mac报错/usr/include/include not permitted，我想怎么会会有2个include。后面改为/usr就可以了！
+
+继续swoole编译
+phpize
+
+./configure
+
+make
+
+make install
